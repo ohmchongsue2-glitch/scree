@@ -1,8 +1,8 @@
 {
   "name": "railway-tiktok-open-test",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "scripts": {"start":"node server.js"},
-  "dependencies": {"express":"^5.1.0","playwright":"^1.55.0"}
+  "dependencies": {"express":"5.1.0","playwright":"1.55.0"}
 }
