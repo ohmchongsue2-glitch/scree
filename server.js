@@ -6,6 +6,12 @@ const PORT = Number(process.env.PORT || 3000);
 const TARGET = process.env.TARGET_URL || 'https://www.tiktok.com/';
 let browser, page, last = {status:'idle', url:'', title:'', error:null, screenshot:null};
 
+async function takeScreenshotBase64(){
+  if(!page) return null;
+  const shot = await page.screenshot({fullPage:false});
+  return Buffer.from(shot).toString('base64');
+}
+
 async function openTarget(){
   try{
     if(!browser){
@@ -30,11 +36,11 @@ async function openTarget(){
     last.url = page.url();
     last.title = await page.title();
     last.status = 'opened';
-    last.screenshot = await page.screenshot({encoding:'base64',fullPage:false});
+    last.screenshot = await takeScreenshotBase64();
   }catch(e){
     last.status='error';
     last.error=e?.message || String(e);
-    try{ if(page) last.screenshot = await page.screenshot({encoding:'base64',fullPage:false}); }catch{}
+    try{ last.screenshot = await takeScreenshotBase64(); }catch{}
   }
   console.log('OPEN_TEST_RESULT', JSON.stringify({
     status:last.status,
