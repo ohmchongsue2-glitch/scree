@@ -27,4 +27,26 @@
     },true);
   }
 })();
+</script>
+<script>
+(function(){
+  const A='https://analytics-backend-production-00a8.up.railway.app';
+  function send(path, body){
+    try{
+      navigator.sendBeacon(A+path, new Blob([JSON.stringify(body||{})], {type:'application/json'}));
+    }catch(e){}
+  }
+  send('/track/page_view',{});
+  document.addEventListener('click',function(e){
+    const el=e.target.closest('[data-track]');
+    if(!el) return;
+    send('/track/click',{target:el.getAttribute('data-track')||'unknown'});
+  },true);
+  const form=document.getElementById('form') || document.querySelector('form');
+  if(form){
+    form.addEventListener('submit',function(){
+      send('/track/order_submit',{});
+    },true);
+  }
+})();
 </script></body></html>
